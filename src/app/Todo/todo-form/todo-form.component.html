@@ -1,0 +1,43 @@
+<div class="container p-5">
+  <div class="text-center mb-5">
+    <h3>Create-Todo Form</h3>
+  </div>
+  <form [formGroup]="form" class="form-container" (ngSubmit)="form.valid && onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input type="text" matInput formControlName="title" required>
+      <mat-hint>Should contain more than 3 alphabets</mat-hint>
+      <mat-error *ngIf="form.get('title').touched && !form.get('title').dirty">
+        Title is required
+      </mat-error>
+      <mat-error *ngIf="form.get('title').dirty && !form.get('title').valid">
+        Please enter a valid title
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea type="text" matInput #desc maxlength="256" formControlName="description" required></textarea>
+      <mat-hint align="start">Should contain more than 3 alphabets</mat-hint>
+      <mat-hint align="end">{{desc.value.length}} / 256</mat-hint>
+      <mat-error *ngIf="form.get('description').touched && !form.get('description').dirty">
+        Description is required
+      </mat-error>
+      <mat-error *ngIf="form.get('description').dirty && !form.get('description').valid">
+        Please enter a valid Description
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Completed?</mat-label>
+      <mat-select formControlName="completed">
+        <mat-option value="true">True</mat-option>
+        <mat-option value="false">False</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('completed').touched && !form.get('completed').dirty">
+        This is required
+      </mat-error>
+    </mat-form-field>
+    <div class="text-center">
+      <button type="submit" mat-raised-button>Create</button>
+    </div>
+  </form>
+</div>
