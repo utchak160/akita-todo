@@ -8,6 +8,7 @@ import {Todo} from '../../models/todo';
   providedIn: 'root'
 })
 export class TodoService {
+
   constructor(private todoApiService: TodoApiService, private store: TodoStore) {
   }
 
@@ -25,6 +26,21 @@ export class TodoService {
         return {
           ...state,
           todo
+        };
+      });
+    });
+  }
+
+  updateTodo(data: any, id: string) {
+    this.todoApiService.updateTodo(data, id).subscribe((todo) => {
+      this.store.update(id, todo);
+      this.store.update(state => {
+        const index = state.todo.findIndex(t => t.id === id);
+        const todos = [...state.todo];
+        todos[index] = todo;
+        return {
+          ...state,
+          todo: todos
         };
       });
     });

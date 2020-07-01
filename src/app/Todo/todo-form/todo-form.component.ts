@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Todo} from '../../models/todo';
 import {TodoService} from '../state/todo.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {TodoQuery} from '../state/todo.query';
 
 @Component({
   selector: 'app-todo-form',
@@ -12,13 +13,32 @@ import {Router} from '@angular/router';
 export class TodoFormComponent implements OnInit {
 
   form: FormGroup;
-  constructor(private todoService: TodoService, private router: Router) { }
+  private mode = 'create';
+  private id: string;
+  private todo: Todo;
+  constructor(private todoService: TodoService, private router: Router, private route: ActivatedRoute, private todoQuery: TodoQuery) { }
 
   ngOnInit() {
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       description: new FormControl(null, {validators: [Validators.required]}),
       completed: new FormControl(null, {validators: [Validators.required]})
+    });
+    this.todoService.storeTodo();
+    this.route.paramMap.subscribe((param: ParamMap) => {
+      if (param.has('id')) {
+        this.mode = 'edit';
+        this.id = param.get('id');
+        this.todo = this.todoQuery.getEntity(this.id);
+        console.log('[Edit]', this.todo);
+        this.form.setValue({
+          title: this.todo.title,
+          description: this.todo.description,
+          completed: this.todo.completed
+        });
+      } else {
+        this.mode = 'create';
+      }
     });
   }
 
@@ -28,7 +48,11 @@ export class TodoFormComponent implements OnInit {
       description: this.form.value.description,
       completed: this.form.value.completed
     };
-    this.todoService.createTodo(todo);
+    if (this.mode === 'create') {
+      this.todoService.createTodo(todo);
+    } else if (this.mode === 'edit') {
+      this.todoService.updateTodo(todo, this.id);
+    }
     this.form.reset();
     this.router.navigate(['/list']);
   }
