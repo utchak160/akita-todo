@@ -29,4 +29,19 @@ export class TodoService {
       });
     });
   }
+
+  deleteTodo(id: string) {
+    this.todoApiService.deleteTodo(id).subscribe((res) => {
+      if (res) {
+        this.store.remove(id);
+        this.store.update(state => {
+          const updatedTodo = state.todo.filter(t => t.id !== id);
+          return {
+            ...state,
+            todo: updatedTodo
+          };
+        });
+      }
+    });
+  }
 }
