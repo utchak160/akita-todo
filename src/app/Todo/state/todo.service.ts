@@ -19,6 +19,10 @@ export class TodoService {
     });
   }
 
+  getTodoById(id: string) {
+    return this.todoApiService.getTodoById(id);
+  }
+
   createTodo(data: any) {
     this.todoApiService.addTodo(data).subscribe((todo) => {
       this.store.add(todo);

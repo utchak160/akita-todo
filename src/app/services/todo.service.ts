@@ -13,6 +13,10 @@ export class TodoApiService {
     return this.apiService.get<Todo[]>('/api/todo', {}, false);
   }
 
+  getTodoById(id: string): Observable<Todo> {
+    return this.apiService.get<Todo>(`/api/todo/${id}`, {}, false);
+  }
+
   addTodo(data: any): Observable<Todo> {
     return this.apiService.post<Todo>('/api/todo/create', data, false);
   }

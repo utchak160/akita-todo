@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Todo} from '../../models/todo';
 import {TodoService} from '../state/todo.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {TodoQuery} from '../state/todo.query';
 
 @Component({
   selector: 'app-todo-form',
   templateUrl: './todo-form.component.html',
-  styleUrls: ['./todo-form.component.css']
+  styleUrls: ['./todo-form.component.css'],
 })
 export class TodoFormComponent implements OnInit {
 
@@ -16,7 +15,7 @@ export class TodoFormComponent implements OnInit {
   private mode = 'create';
   private id: string;
   private todo: Todo;
-  constructor(private todoService: TodoService, private router: Router, private route: ActivatedRoute, private todoQuery: TodoQuery) { }
+  constructor(private todoService: TodoService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -29,12 +28,14 @@ export class TodoFormComponent implements OnInit {
       if (param.has('id')) {
         this.mode = 'edit';
         this.id = param.get('id');
-        this.todo = this.todoQuery.getEntity(this.id);
-        console.log('[Edit]', this.todo);
-        this.form.setValue({
-          title: this.todo.title,
-          description: this.todo.description,
-          completed: this.todo.completed
+        this.todoService.getTodoById(this.id).subscribe((res) => {
+          console.log(res);
+          this.todo = res;
+          this.form.setValue({
+            title: this.todo.title,
+            description: this.todo.description,
+            completed: this.todo.completed
+          });
         });
       } else {
         this.mode = 'create';
