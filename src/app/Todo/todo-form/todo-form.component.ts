@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Todo} from '../../models/todo';
 import {TodoService} from '../state/todo.service';
@@ -15,7 +15,9 @@ export class TodoFormComponent implements OnInit {
   private mode = 'create';
   private id: string;
   private todo: Todo;
-  constructor(private todoService: TodoService, private router: Router, private route: ActivatedRoute) { }
+
+  constructor(private todoService: TodoService, private router: Router, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
