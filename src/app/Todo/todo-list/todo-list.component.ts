@@ -15,7 +15,7 @@ export class TodoListComponent implements OnInit {
   todos: Todo[];
   todoSub: Subscription;
 
-  constructor(private todoService: TodoService, private _alert: NotificationService, private todoQuery: TodoQuery) {
+  constructor(private todoService: TodoService, private alert: NotificationService, private todoQuery: TodoQuery) {
   }
 
   ngOnInit() {
@@ -26,7 +26,7 @@ export class TodoListComponent implements OnInit {
     // });
     this.todoQuery.selectAll().subscribe((res) => {
       this.todos = res;
-      this._alert.success('Todos fetched Successfully');
+      this.alert.success('Todos fetched Successfully');
     });
   }
 
