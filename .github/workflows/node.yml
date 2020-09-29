@@ -1,0 +1,27 @@
+name: NodeJs CI
+
+on: [
+      push,
+      pull_request
+]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.Js
+        uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+      - name: Installing Dependencies
+      - run: npm ci
+      - name: Lint test
+      - run: npm run lint
+      - name: Build
+      - run: npm run build --prod
+      - name: e2e testing
+      - run: npm run test
+        env:
+          CI: true

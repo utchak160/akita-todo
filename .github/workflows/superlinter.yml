@@ -1,17 +1,17 @@
-name: Super-Linter
-
-on: [push, pull_request]
-
-jobs:
-  super-lint:
-    name: Lint code base
-    runs-on: Ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run Super-Linter
-        uses: actions/super-linter@v3
-        env:
-          DEFAULT_BRANCH: master
-          GITUHB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#name: Super-Linter
+#
+#on: [push, pull_request]
+#
+#jobs:
+#  super-lint:
+#    name: Lint code base
+#    runs-on: Ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Run Super-Linter
+#        uses: actions/super-linter@v3
+#        env:
+#          DEFAULT_BRANCH: master
+#          GITUHB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
